@@ -10,16 +10,19 @@ public class Problema {
     private Long id;
     private String descricao;
     private Date data;
+    private boolean arrumado;
 
     public Problema(String descricao, Date data) {
         this.descricao = descricao;
         this.data = data;
+        this.arrumado = false;
     }
 
     public Problema(Long id, String descricao, Date data) {
         this.id = id;
         this.descricao = descricao;
         this.data = data;
+        this.arrumado = false;
     }
 
     public Long getId() {
@@ -44,5 +47,23 @@ public class Problema {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public boolean isArrumado() {
+        return arrumado;
+    }
+
+    public void setArrumado(boolean arrumado) {
+        this.arrumado = arrumado;
+    }
+
+    @Override
+    public String toString() {
+        return "Problema{" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                ", data=" + data +
+                ", arrumado=" + arrumado +
+                '}';
     }
 }

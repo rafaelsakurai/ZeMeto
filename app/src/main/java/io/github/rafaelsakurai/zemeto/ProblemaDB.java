@@ -25,7 +25,7 @@ public class ProblemaDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE Problema (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "descricao TEXT, data TEXT);");
+                "descricao TEXT, data TEXT, status INTEGER);");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ProblemaDB extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("descricao", problema.getDescricao());
         values.put("data", df.format(problema.getData()));
-
+        values.put("status", problema.isArrumado() ? 1 : 0);
         if(problema.getId() == null) {
             Long id = db.insert("Problema", null, values);
             problema.setId(id);
@@ -55,7 +55,7 @@ public class ProblemaDB extends SQLiteOpenHelper {
         List<Problema> problemas = new ArrayList();
 
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, descricao, data FROM Problema ORDER BY _id", null);
+        Cursor cursor = db.rawQuery("SELECT _id, descricao, data, status FROM Problema ORDER BY _id", null);
         cursor.moveToFirst();
 
         for(int i = 0; i < cursor.getCount(); i++) {
@@ -65,6 +65,7 @@ public class ProblemaDB extends SQLiteOpenHelper {
                         cursor.getString(1),
                         df.parse(cursor.getString(2))
                 );
+                problema.setArrumado(cursor.getInt(3) == 0 ? false : true);
                 problemas.add(problema);
                 cursor.moveToNext();
             } catch (Exception e) {}

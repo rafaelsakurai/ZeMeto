@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Problema> problemas;
     private List<String> descricoes = new ArrayList();
-    private ArrayAdapter<String> adapter;
+    private ProblemaArrayAdapter adapter;
     private ProblemaDB db;
     private DateFormat df;
     private DateFormat hf;
@@ -35,13 +35,14 @@ public class MainActivity extends AppCompatActivity {
         db = new ProblemaDB(this);
         problemas = db.consultarTodos();
 
-        for(Problema p : problemas) {
-            descricoes.add("ID: " + p.getId() + "\nDescrição: " + p.getDescricao() + "\nData: " + df.format(p.getData()) + " " + hf.format(p.getData()));
-        }
+//        for(Problema p : problemas) {
+//            descricoes.add("ID: " + p.getId() + "\nDescrição: " + p.getDescricao() + "\nData: " + df.format(p.getData()) + " " + hf.format(p.getData()));
+//        }
 
         ListView lista = (ListView) findViewById(R.id.lista);
-        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, descricoes);
+        adapter = new ProblemaArrayAdapter(this, 0, problemas);
+//        adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, descricoes);
         lista.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         String texto = problema.getText().toString();
 
         Problema p = new Problema(texto, new Date());
+        p.setArrumado(true);
         db.salvar(p);
         descricoes.add("ID: " + p.getId() + "\nDescrição: " + p.getDescricao() + "\nData: " + df.format(p.getData()) + " " + hf.format(p.getData()));
 
